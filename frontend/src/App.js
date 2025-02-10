@@ -7,6 +7,8 @@ import CreateAccPage from "./pages/CreateAccPage";
 import ScheduleBookingPage from "./pages/ScheduleBookingPage";
 import UpdateBookingPage from "./pages/UpdateBookingPage";
 import DashboardPage from "./pages/DashboardPage";
+import AdminDashboardPage from "./pages/AdminDashboard";
+import Notification from "./components/Notifications/Notification";
 
 export default function App() {
   /* Getting and destructuring/extracting user information from authentication context */
@@ -45,6 +47,28 @@ export default function App() {
             path="/update-booking/:id"
             element={user ? <UpdateBookingPage /> : <Navigate to="/login" />}
           />
+
+
+
+         {/* Route for a notification  page*/}
+         <Route
+            path="/notification"
+            element={<Notification/>}
+          />
+
+           {/* Route for a updating a service booking page*/}
+           <Route
+            path="/admin/dashboard"
+            element={ <AdminDashboardPage /> }
+          />
+
+
+
+
+
+
+
+
         </Routes>
       </BrowserRouter>
     </div>

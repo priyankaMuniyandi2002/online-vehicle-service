@@ -1,0 +1,17 @@
+backend run command ---- npm run server 
+frontend run command -----npm run start
+
+
+1 admin update the service booking status 
+3 .Service Management Module
+Admin dashboard for service providers to manage bookings.
+Assign technicians to specific service tasks.
+Update service statuses and generate invoices.
+
+
+4. Notification Modul  booking confirmation mail 
+
+5 . Chatbot/Live Chat Module 
+Integrate AI-powered chatbots for 24/7 customer support. 
+Provide live chat with customer service representatives for instant help.
+
