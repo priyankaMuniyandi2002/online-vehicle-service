@@ -12,7 +12,7 @@ const LandingBrand = () => {
   return (
     <section className="brand-section">
       <div className="brand-container">
-        <h2 className="brand-title">
+        <h2 className="brand">
           <span className="logo-container">
             T
             <span className="logo">
@@ -20,7 +20,7 @@ const LandingBrand = () => {
             </span>
             C
           </span>
-          <span className="title">Tyler's Auto Clinic</span>
+          <span className=""> Online vehicle service booking and management system   </span>
         </h2>
         <p className="slogan">Your Trusted Partner for Car Care Solutions!</p>
       </div>

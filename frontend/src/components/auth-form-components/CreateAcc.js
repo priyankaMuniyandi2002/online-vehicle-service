@@ -268,32 +268,7 @@ const CreateAcc = () => {
           </div>
         </form>
 
-        {/* 
-        NOTE: This link directs users to Tyler's Auto Clinic's "terms and conditions page". As this is a fictitious company, it serves as a placeholder link 
-        to demonstrate application functionality. This will be addressed in future revisions. 
-        */}
-        <div className="disclaimer-container create-acc-link-container">
-          <p>
-            By creating an account you agree to the
-            <span className="link-container">
-              <a href="/#">Terms of Service and Privacy Policy</a>
-            </span>
-          </p>
-        </div>
-
-        {/* 
-        NOTE: This link directs users to Tyler's Auto Clinic's website for customers. As this is a fictitious company, it serves as a placeholder link 
-        to demonstrate application functionality. This will be addressed in future revisions. 
-        */}
-        <div className="company-info-container company-info-create-acc-container">
-          <p>
-            Copyright {year}
-            <span className="link-container">
-              <a href="/#">Tyler's Auto Clinic</a>
-            </span>
-            | All Right's Reserved.
-          </p>
-        </div>
+       
       </div>
     </section>
   );

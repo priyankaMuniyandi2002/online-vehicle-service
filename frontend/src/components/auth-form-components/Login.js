@@ -147,19 +147,8 @@ const Login = () => {
           </p>
         </div>
 
-        {/* 
-        NOTE: This link directs users to Tyler's Auto Clinic's website for customers. As this is a fictitious company, it serves as a placeholder link 
-        to demonstrate application functionality. This will be addressed in future revisions. 
-        */}
-        <div className="company-info-container company-info-login-container">
-          <p>
-            Copyright {year}
-            <span className="link-container">
-              <a href="/#">Tyler's Auto Clinic</a>
-            </span>
-            | All Right's Reserved.
-          </p>
-        </div>
+        
+      
       </div>
     </section>
   );

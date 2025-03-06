@@ -100,7 +100,7 @@
       rgba(4, 3, 58, 0.6),
       rgba(4, 3, 58, 0.6)
     ),
-    url(https://images.unsplash.com/photo-1568559598349-dbf322d50a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80);
+    url(./hero.png);
 }
 
 .brand-container {
@@ -109,7 +109,7 @@
 }
 
 .brand-title {
-  font-size: 3rem;
+  font-size: 2rem;
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -153,7 +153,7 @@
 .auth-logo {
   display: inline-block;
   font-size: 2rem;
-  background-color: #04033a;
+  background-color: #0048a7;
   color: #fff;
   padding: 0.2em 0.3em;
   border-radius: 0 10px;
@@ -220,7 +220,7 @@
 
 .auth-btn {
   width: 100%;
-  background-color: #04033a;
+  background-color: #0048a7;
   color: #fff;
   border: none;
   padding: 0.5em 0.8em;
