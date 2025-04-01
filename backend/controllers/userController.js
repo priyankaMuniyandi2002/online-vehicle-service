@@ -15,15 +15,16 @@ const createToken = (_id) => {
 
 /* CREATE USER ACCOUNT CONTROLLER FUNCTION */
 const userCreateAcc = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+
+  const { firstName, lastName, email, password,role } = req.body;
 
   try {
-    const user = await User.createAcc(firstName, lastName, email, password);
+    const user = await User.createAcc(firstName, lastName, email, password,role);
 
     // generating a json web token (jwt)
     const token = createToken(user._id);
 
-    res.status(200).json({ firstName, lastName, email, token });
+    res.status(200).json({ firstName, lastName, email,role, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -39,9 +40,9 @@ const userLogin = async (req, res) => {
     // generating a json web token (jwt)
     const token = createToken(user._id);
 
-    const { firstName, lastName } = user;
+    const { firstName, lastName,role } = user;
 
-    res.status(200).json({ firstName, lastName, email, token });
+    res.status(200).json({ firstName, lastName, email, token,role });
   } catch (error) {
     res.status(400).json({
       message: "login-error-response",

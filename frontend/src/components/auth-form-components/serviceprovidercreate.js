@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useCreateAcc } from "../../hooks/useCreateAcc";
 
-const CreateAcc = () => {
+const ServiceproCreateAcc = () => {
   /* Destructuring the react-hook-form library useForm hook for form handling and validation */
   const {
     handleSubmit,
@@ -72,7 +72,7 @@ const CreateAcc = () => {
     const { firstName, lastName } = createAccCredentials;
     createAccCredentials.firstName = formatName(firstName);
     createAccCredentials.lastName = formatName(lastName);
-    createAccCredentials.role="customer"
+    createAccCredentials.role="serviceprovider"
     await createAcc(createAccCredentials);
     reset();
   };
@@ -275,4 +275,4 @@ const CreateAcc = () => {
   );
 };
 
-export default CreateAcc;
+export default ServiceproCreateAcc;

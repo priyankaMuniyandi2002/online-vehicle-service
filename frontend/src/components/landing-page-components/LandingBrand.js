@@ -22,10 +22,14 @@ const LandingBrand = () => {
           </span>
           <span className=""> Online vehicle service booking and management system   </span>
         </h2>
-        <p className="slogan">Your Trusted Partner for Car Care Solutions!</p>
+        <p className="slogan">Your Trusted Partner for vehicle Care Solutions!</p>
       </div>
     </section>
   );
 };
+
+
+
+
 
 export default LandingBrand;

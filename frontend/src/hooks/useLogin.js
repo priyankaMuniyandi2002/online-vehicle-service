@@ -33,7 +33,8 @@ export const useLogin = () => {
           localStorage.setItem("user", JSON.stringify(json));
         } else {
           // If "Remember Me" is not checked, remove the preference from localStorage
-          localStorage.removeItem("user");
+          localStorage.setItem("user", JSON.stringify(json));
+
         }
 
         // update the auth context global state.

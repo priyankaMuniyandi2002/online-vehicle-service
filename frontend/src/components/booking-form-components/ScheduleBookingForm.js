@@ -5,7 +5,7 @@
  */
 
 /* Importing the necessary dependencies */
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { fetchBookings } from "../../redux/bookingsSlice";
@@ -21,10 +21,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import * as moment from "moment";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ScheduleBookingForm = () => {
   /* Getting and destructuring/extracting user information from authentication context */
   const { user } = useAuthContext();
+
+  const {id}=useParams();
+
+  const [vehicle,setvehicle]=useState()
+
+
 
   /* Initializing Redux toolkit dispatch hook */
   const dispatch = useDispatch();
@@ -62,6 +70,9 @@ const ScheduleBookingForm = () => {
     );
   };
 
+    
+
+
   /* Function to trigger the display of the help menu modal */
   const showModal = () => {
     dispatch(openHelpModal());
@@ -79,6 +90,13 @@ const ScheduleBookingForm = () => {
 
     // Add status flag to the newBooking object
     newBooking.status = "SCHEDULED";
+    newBooking.vehicleMake=vehicle.make
+    newBooking.vehicleModel=vehicle.model
+    newBooking.vehicleReg=vehicle.registrationNumber
+    newBooking.customerEmail=vehicle.useremail
+    newBooking.customerFirstName=user.firstName
+    newBooking.customerLastName=user.lastName
+    
 
     try {
       const response = await fetch("/api/bookings/schedule-booking", {
@@ -103,6 +121,28 @@ const ScheduleBookingForm = () => {
       console.error("Error adding new booking!:", error);
     }
   };
+
+
+  useEffect(()=>{
+
+    //
+
+   const fetchdata=async()=>{
+
+   const { data } =  await axios.get(`http://localhost:8080/api/vehicles/view/buyid/${id}`)
+
+   console.log(data);
+
+   setvehicle(data)
+   
+ 
+   }
+
+   fetchdata()
+
+
+
+  },[])
 
   return (
     <section className="booking-form-section">
@@ -136,18 +176,13 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter customer's first name (e.g., Kelvin)"
-                  {...register("customerFirstName", {
-                    required: {
-                      value: true,
-                      message: "Customer's first name is required",
-                    },
-                  })}
+                 value={user.firstName}
                 />
-                {errors.customerFirstName && (
+                {/* {errors.customerFirstName && (
                   <p className="error-message">
                     {errors.customerFirstName.message}
                   </p>
-                )}
+                )} */}
               </div>
 
               {/* Customer Last Name Field */}
@@ -156,16 +191,11 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter customer's last name (e.g., Harris)"
-                  {...register("customerLastName", {
-                    required: {
-                      value: true,
-                      message: "Customer's last name is required",
-                    },
-                  })}
+                  value={user.lastName}
                 />
                 {errors.customerLastName && (
                   <p className="error-message">
-                    {errors.customerLastName.message}
+                   
                   </p>
                 )}
               </div>
@@ -176,16 +206,7 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter customer's email address (e.g., kelvin@company.co.za)"
-                  {...register("customerEmail", {
-                    required: {
-                      value: true,
-                      message: "Customer's email address is required",
-                    },
-                    pattern: {
-                      value: emailRegexPattern,
-                      message: "Please enter a valid email address",
-                    },
-                  })}
+                  value={user.email}
                 />
                 {errors.customerEmail && (
                   <p className="error-message">
@@ -234,13 +255,8 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter vehicle make (e.g., Toyota Yaris)"
-                  {...register("vehicleMake", {
-                    required: {
-                      value: true,
-                      message: "Vehicle make is required",
-                    },
-                  })}
-                />
+                 value={vehicle?.make}
+                  />
                 {errors.vehicleMake && (
                   <p className="error-message">{errors.vehicleMake.message}</p>
                 )}
@@ -252,23 +268,7 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter model year (1980 or newer, e.g., 2010)"
-                  maxLength="4"
-                  {...register("vehicleModel", {
-                    required: {
-                      value: true,
-                      message: "Vehicle model year is required",
-                    },
-                    minLength: {
-                      value: 4,
-                      message:
-                        "Vehicle model year is too short. Please enter a valid 4 digit calender model year",
-                    },
-                    validate: {
-                      validCalYear: (year) =>
-                        isValidCalYear(year) ||
-                        "Please enter a valid 4 digit calender model year",
-                    },
-                  })}
+                 value={vehicle?.model}
                 />
                 {errors.vehicleModel && (
                   <p className="error-message">{errors.vehicleModel.message}</p>
@@ -281,16 +281,9 @@ const ScheduleBookingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter vehicle registration number (e.g., GP67124)"
-                  {...register("vehicleReg", {
-                    required: {
-                      value: true,
-                      message: "Vehicle registration number is required",
-                    },
-                  })}
+                 value={vehicle?.registrationNumber}
                 />
-                {errors.vehicleReg && (
-                  <p className="error-message">{errors.vehicleReg.message}</p>
-                )}
+               
               </div>
             </div>
 

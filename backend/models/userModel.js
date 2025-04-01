@@ -1,5 +1,3 @@
-/** TAC SERVICE BOOKING APP - MONGOOSE USER SCHEMA MODEL FILE **/
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
@@ -16,6 +14,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    enum: ["customer", "serviceprovider", "technician"],
+    required: true,
+  },
 });
 
 /* STATIC ACCOUNT CREATION METHOD */
@@ -23,10 +26,11 @@ userSchema.statics.createAcc = async function (
   firstName,
   lastName,
   email,
-  password
+  password,
+  role
 ) {
   // validation
-  if (!firstName || !lastName || !email || !password) {
+  if (!firstName || !lastName || !email || !password || !role) {
     throw Error("All fields must be filled");
   }
 
@@ -34,17 +38,16 @@ userSchema.statics.createAcc = async function (
     throw Error("Password Not Strong Enough");
   }
 
+  if (!["customer", "serviceprovider", "technician"].includes(role)) {
+    throw Error("Invalid role specified");
+  }
+
   // checking whether the user email address already exists in the database
   const exists = await this.findOne({ email });
-
   if (exists) {
     throw Error("Email Address Already In Use");
   }
 
-  /*
-  * bcrypt package allows us to use "salt" during password hashing. "salt" is a random string of characters that gets added to the users password prior to hashing, 
-    thereby adding an extra layer of security.
-  */
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
@@ -53,6 +56,7 @@ userSchema.statics.createAcc = async function (
     lastName,
     email,
     password: hash,
+    role,
   });
 
   return user;
@@ -60,19 +64,17 @@ userSchema.statics.createAcc = async function (
 
 /* STATIC LOGIN METHOD */
 userSchema.statics.login = async function (email, password) {
-  //validation
+  // validation
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
 
   const user = await this.findOne({ email });
-
   if (!user) {
     throw Error("Invalid email address and/or password");
   }
 
   const match = await bcrypt.compare(password, user.password);
-
   if (!match) {
     throw Error("Invalid email address and/or password");
   }

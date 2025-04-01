@@ -1,6 +1,4 @@
-/** TAC SERVICE BOOKING APP.JS FILE **/
-
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import LandingPage from "./pages/LandingPage";
 import CreateAccPage from "./pages/CreateAccPage";
@@ -9,67 +7,53 @@ import UpdateBookingPage from "./pages/UpdateBookingPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboard";
 import Notification from "./components/Notifications/Notification";
+import TechnicianCreateAcc from "./components/auth-form-components/technicianregister";
+import ServiceproCreateAcc from "./components/auth-form-components/serviceprovidercreate";
+import AddVehicleForm from "./pages/customer/addvehicle";
+import VehicleTable from "./components/vehicle/vehicletable";
+import Navbar from "./components/navbar-components/Navbar";
+import Footer from "./components/footer-components/Footer";
+import Dashboardforuser from "./components/dashboard-components/new/dashboard";
+import Vehiclepages from "./components/vehicle/vehiclepage";
+import HomePage from "./pages/home";
 
 export default function App() {
-  /* Getting and destructuring/extracting user information from authentication context */
   const { user } = useAuthContext();
 
   return (
     <div className="App">
       <BrowserRouter>
+        <Navbar />
+        <br/>
         <Routes>
-          {/* Route for creating a new user account page */}
-          <Route
-            path="/create-account"
-            element={!user ? <CreateAccPage /> : <Navigate to="/" />}
-          />
-          {/* Route for the login page */}
-          <Route
-            path="/login"
-            element={!user ? <LandingPage /> : <Navigate to="/" />}
-          />
+          {/* Public Routes */}
+          {/* HomePage */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create-account" element={<CreateAccPage />} />
+          <Route path="/technician/create-account" element={<TechnicianCreateAcc />} />
+          <Route path="/serviceprovider/create-account" element={<ServiceproCreateAcc />} />
+          <Route path="/login" element={<LandingPage />} />
 
-          {/* Route for the user's service booking dashboard */}
-          <Route
-            exact={true}
-            path="/"
-            element={user ? <DashboardPage /> : <Navigate to="/login" />}
-          />
+          {/* Customer Routes */}
+          {user && (
+            <>
+              <Route path="/my-bookings" element={<DashboardPage />} />
+              <Route path="/addvehicle" element={<AddVehicleForm />} />
+              <Route path="/my-vehicles-list" element={<Vehiclepages />} />
+              {/* Vehiclepages //my-vehicles-list */}
+              <Route path="/my-vehicles" element={<VehicleTable />} />
+              <Route path="/schedule-booking/:id" element={<ScheduleBookingPage />} />
+              <Route path="/update-booking/:id" element={<UpdateBookingPage />} />
+              <Route path="/notification" element={<Notification />} />
+              <Route path="/dashboard" element={<Dashboardforuser />} />
+              {/* Dashboardforuser */}
+            </>
+          )}
 
-          {/* Route for the new service booking page*/}
-          <Route
-            path="/schedule-booking"
-            element={user ? <ScheduleBookingPage /> : <Navigate to="/login" />}
-          />
-
-          {/* Route for a updating a service booking page*/}
-          <Route
-            path="/update-booking/:id"
-            element={user ? <UpdateBookingPage /> : <Navigate to="/login" />}
-          />
-
-
-
-         {/* Route for a notification  page*/}
-         <Route
-            path="/notification"
-            element={<Notification/>}
-          />
-
-           {/* Route for a updating a service booking page*/}
-           <Route
-            path="/admin/dashboard"
-            element={ <AdminDashboardPage /> }
-          />
-
-
-
-
-
-
-
-
+          {/* Admin Routes */}
+          {user && <Route path="/admin/dashboard" element={<AdminDashboardPage />} />}
         </Routes>
+        <Footer  />
       </BrowserRouter>
     </div>
   );

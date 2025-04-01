@@ -53,6 +53,8 @@ const createBooking = async (req, res) => {
     req.body.addInfo = "None"; // Set "addInfo" to a string value of "None" if no additional booking information is provided.
   }
 
+
+
   const userId = req.user._id;
   const newBooking = await Booking.create({ ...req.body, userId });
   const bookingsList = await Booking.find({ userId });
@@ -64,6 +66,8 @@ const createBooking = async (req, res) => {
       bookings: bookingsList,
     });
   } catch (error) {
+    console.log(error);
+    
     res.send(`Error message: ${error.message}`);
   }
 };

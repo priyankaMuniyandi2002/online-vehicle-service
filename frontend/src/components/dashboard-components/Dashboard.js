@@ -1,67 +1,56 @@
-/** TAC SERVICE BOOKING APP - DASHBOARD COMPONENT **/
-/*
- * This component represents the dashboard section of the TAC Service Booking App.
- * It displays all information related to the service bookings, including functionality for searching, completing, cancelling and updating bookings.
- */
-
-/* Importing the necessary dependencies */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBookings } from "../../redux/bookingsSlice";
 import { openHelpModal } from "../../redux/helpModalSlice";
 import { openDcModal } from "../../redux/deleteConfirmModalSlice";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
 import columnDisplayHeadings from "../sub-component-files/displayHeadings";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
-import DoneIcon from "@mui/icons-material/Done";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { toast } from "react-toastify";
+import {
+  Container,
+  Typography,
+  Button,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import { AddCircle, Info, Delete, Edit } from "@mui/icons-material";
 
-const Dashboard = () => {
-  /* Getting and destructuring/extracting user information from authentication context */
+const UserDashboard = () => {
   const { user } = useAuthContext();
   const { firstName, lastName } = user;
-
-  /* React state for search term and search result status */
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResultEmpty, setSearchResultEmpty] = useState(false);
-
-  /* Initializing Redux toolkit dispatch hook and retrieving bookings global state from Redux toolkit store */
   const dispatch = useDispatch();
   const bookings = useSelector((state) => state.bookings.bookingsList);
 
-  /* Function to trigger the display of the help menu modal */
-  const showModal = () => {
-    dispatch(openHelpModal());
-  };
+  const showModal = () => dispatch(openHelpModal());
+  const showDeleteConfirmModal = (id) => dispatch(openDcModal(id));
 
-  /* Function to trigger the display of the delete confirmation modal - to effectively cancel or mark a booking as complete */
-  const showDeleteConfirmModal = (id) => {
-    dispatch(openDcModal(id));
-  };
-
-  /* Function to generate status flag CSS class names based on the current status value */
   const statusClass = (status) => {
     switch (status) {
       case "SCHEDULED":
-        return "scheduled";
+        return "#4CAF50";
       case "IN-PROGRESS":
-        return "in-progress";
+        return "#FF9800";
       case "ON-HOLD":
-        return "pending";
+        return "#F44336";
       case "WAITING FOR PARTS":
-        return "waiting";
+        return "#2196F3";
       default:
-        return "";
+        return "#9E9E9E";
     }
   };
 
-  /* useEffect hook to fetch service bookings from the server */
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
@@ -69,233 +58,130 @@ const Dashboard = () => {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const json = await response.json();
-
         if (response.ok) {
-          // Handle search filtering if searchTerm is present
           let bookingsResponse = json.bookings;
-
           if (searchTerm) {
             const refinedSearchTerm = searchTerm.toLowerCase().trim();
-
-            // Split the refined search term into individual search terms
             const searchItems = refinedSearchTerm.split(/\s+/).filter(Boolean);
-
             if (searchItems.length > 0) {
-              const filteredData = bookingsResponse.filter((booking) => {
-                const refinedBookingValues = Object.values(booking).filter(
-                  (value) => typeof value === "string"
-                );
-
-                return searchItems.every((searchItem) =>
-                  refinedBookingValues.some((value) =>
-                    value.toLowerCase().includes(searchItem)
-                  )
-                );
-              });
-
-              // Check if the search result is empty
-              if (filteredData.length === 0) {
-                setSearchResultEmpty(true);
-              } else {
-                setSearchResultEmpty(false);
-              }
-
+              const filteredData = bookingsResponse.filter((booking) =>
+                searchItems.every((searchItem) =>
+                  Object.values(booking)
+                    .filter((value) => typeof value === "string")
+                    .some((value) => value.toLowerCase().includes(searchItem))
+                )
+              );
+              setSearchResultEmpty(filteredData.length === 0);
               dispatch(fetchBookings(filteredData));
             } else {
-              // If no search term, set bookings as is as stored in the redux toolkit store
-              setSearchResultEmpty(false); // Reset searchResultEmpty to false
+              setSearchResultEmpty(false);
               dispatch(fetchBookings(bookingsResponse));
             }
           } else {
-            // If search term is empty, set bookings as is and reset searchResultEmpty
             setSearchResultEmpty(false);
             dispatch(fetchBookings(bookingsResponse));
           }
         }
       };
-
       fetchData();
     }
   }, [user, dispatch, searchTerm]);
 
-  /* Function to handle changes in the search input */
-  const handleSearchTerm = (event) => {
-    const { value } = event.target;
-    setSearchTerm(value);
-  };
-
-  /* Function to handle search when the user pastes a term into the search input field */
-  const searchOnPaste = (event) => {
-    event.preventDefault();
-    const pastedSearchText = event.clipboardData.getData("text");
-    setSearchTerm(pastedSearchText);
-  };
-
-  /* Function to handle the cancellation/completion of a booking */
-  const deleteBooking = async (id, action) => {
-    try {
-      // Send a DELETE request to the server to remove the specified booking
-      const response = await fetch(`/api/bookings/remove-booking/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-
-      const json = await response.json();
-      const bookingsData = json.bookings;
-      const filteredBookings = bookingsData.filter(
-        (booking) => booking._id !== id
-      );
-
-      if (response.ok) {
-        dispatch(fetchBookings(filteredBookings));
-        if (action === "cancel") {
-          toast("Work order cancelled!", { type: "success" });
-        } else if (action === "complete") {
-          toast("Work order completed!", { type: "success" });
-        }
-      }
-    } catch (error) {
-      console.error("Error", error);
-      if (action === "cancel") {
-        toast("Cancellation unsuccessful!", { type: "error" });
-      } else if (action === "complete") {
-        toast("Mark work order complete unsuccessful!", { type: "error" });
-      }
-    }
-  };
-
   return (
-    <section className="dashboard-display-section">
-      <div className="title-container">
-        <h2 className="title">Booking Dashboard</h2>
-      </div>
-      <div className="nav-link-container">
-        <Link to="/schedule-booking" className="link-btn">
-          <FontAwesomeIcon icon={faPlusCircle} />
-          Schedule Booking
-        </Link>
-        <button className="link-btn" onClick={showModal}>
-          <FontAwesomeIcon icon={faInfoCircle} />
-          Help
-        </button>
-      </div>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+       Customer Booking Dashboard
+      </Typography>
 
-      <div className="data-available">
-        <form className="dashboard-search-bar-container">
-          <input
-            type="text"
-            name="searchTerm"
-            placeholder="Search Booking"
-            value={searchTerm}
-            onChange={handleSearchTerm}
-            onPaste={searchOnPaste}
-          />
-        </form>
-        <div className="dashboard-display-container">
-          {searchResultEmpty ? (
-            <div className="no-data-message">
-              <p>No matching bookings found!</p>
-            </div>
-          ) : bookings.length === 0 ? (
-            <div className="no-data-message">
-              <p>No Bookings Scheduled!</p>
-            </div>
-          ) : (
-            <div className="dashboard-display-table">
-              <table>
-                <thead>
-                  <tr>
-                    {columnDisplayHeadings.map((heading) => (
-                      <th key={uuidv4()}>{heading}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((booking) => {
-                    return (
-                      <tr key={uuidv4()}>
-                        <td>{booking._id}</td>
-                        <td>
-                          <span
-                            className={`status-flag status-${statusClass(
-                              booking.status
-                            )}`}
-                          >
-                            {booking.status}
-                          </span>
-                        </td>
-                        <td>{booking.customerFirstName}</td>
-                        <td>{booking.customerLastName}</td>
-                        <td>{booking.customerEmail}</td>
-                        <td>{booking.customerContactNumber}</td>
-                        <td>{booking.vehicleMake}</td>
-                        <td>{booking.vehicleModel}</td>
-                        <td>{booking.vehicleReg}</td>
-                        <td>{booking.serviceOption}</td>
-                        <td>{booking.bookingDate}</td>
-                        <td className="add-info-display">{booking.addInfo}</td>
-                        <td>
-                          {firstName} {lastName}
-                        </td>
-                        <td className="action-items">
-                          <div className="delete-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Cancel"
-                              anchorId={`delete-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <CloseIcon
-                              id={`delete-icon-${booking._id}`}
-                              className="icon delete-icon"
-                              onClick={() => {
-                                showDeleteConfirmModal(booking._id);
-                              }}
-                            />
-                          </div>
-                          <div className="update-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Update"
-                              anchorId={`update-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <Link to={`/update-booking/${booking._id}`}>
-                              <EditIcon
-                                id={`update-icon-${booking._id}`}
-                                className="icon update-icon"
-                              />
-                            </Link>
-                          </div>
-                          <div className="complete-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Complete"
-                              anchorId={`complete-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <DoneIcon
-                              id={`complete-icon-${booking._id}`}
-                              className="icon complete-icon"
-                              onClick={() => {
-                                deleteBooking(booking._id, "complete");
-                              }}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
+      <Button
+        variant="contained"
+        startIcon={<AddCircle />}
+        component={Link}
+        to="/addvehicle"
+        sx={{ mr: 2 }}
+      >
+        Add vehicle
+      </Button>
+      <Button variant="outlined" startIcon={<Info />} onClick={showModal}>
+        Help
+      </Button>
+
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Search Booking"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ my: 2 }}
+      />
+
+      {searchResultEmpty ? (
+        <Typography variant="h6" color="error">
+          No matching bookings found!
+        </Typography>
+      ) : bookings.length === 0 ? (
+        <Typography variant="h6" color="textSecondary">
+          No Bookings Scheduled!
+        </Typography>
+      ) : (
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {columnDisplayHeadings.map((heading) => (
+                  <TableCell key={uuidv4()}>{heading}</TableCell>
+                ))}
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {bookings.map((booking) => (
+                <TableRow key={uuidv4()}>
+                  <TableCell>{booking._id}</TableCell>
+                  <TableCell>
+                    <span
+                      style={{
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                        backgroundColor: statusClass(booking.status),
+                        color: "#fff",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {booking.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>{booking.customerFirstName}</TableCell>
+                  <TableCell>{booking.customerLastName}</TableCell>
+                  <TableCell>{booking.customerEmail}</TableCell>
+                  <TableCell>{booking.customerContactNumber}</TableCell>
+                  <TableCell>{booking.vehicleMake}</TableCell>
+                  <TableCell>{booking.vehicleModel}</TableCell>
+                  <TableCell>{booking.vehicleReg}</TableCell>
+                  <TableCell>{booking.serviceOption}</TableCell>
+                  <TableCell>{booking.bookingDate}</TableCell>
+                  <TableCell>{booking.addInfo}</TableCell>
+                  <TableCell>
+                    {firstName} {lastName}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title="Cancel">
+                      <IconButton
+                        onClick={() => showDeleteConfirmModal(booking._id)}
+                        color="error"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Container>
   );
 };
 
-export default Dashboard;
+export default UserDashboard;

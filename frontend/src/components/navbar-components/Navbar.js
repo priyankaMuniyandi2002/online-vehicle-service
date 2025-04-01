@@ -1,46 +1,61 @@
-/** TAC SERVICE BOOKING APP NAVBAR FORM COMPONENT FILE **/
-
-/* Importing the necessary dependencies */
+import { AppBar, Toolbar, Button, IconButton, Typography, Avatar, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useLogOut } from "../../hooks/useLogOut";
-import { useAuthContext } from "../../hooks/useAuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
-  /* Getting and destructuring/extracting user information from authentication context */
-  const { user } = useAuthContext();
-  const { firstName, lastName } = user;
-
-  /* Destructuring the logOut function from the custom useLogOut hook */
+  const user = JSON.parse(localStorage.getItem("user"));
   const { logOut } = useLogOut();
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  /* Function for handling user logout */
-  const handleLogout = () => {
-    logOut();
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <div className="navbar nav-footer">
-      <Link to="/">
-        <span className="nav-logo-container">
-          T
-          <span className="nav-logo">
-            <FontAwesomeIcon icon={faCar} />
-          </span>
-          C
-        </span>
-      </Link>
-      <div className="avatar">
-        <span>
-          {firstName} {lastName}
-        </span>
-        <button className="logout-btn" onClick={handleLogout}>
-          <FontAwesomeIcon icon={faSignOut} />
-          Log Out
-        </button>
-      </div>
-    </div>
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+          <FontAwesomeIcon icon={faCar} style={{ marginRight: 8 }} /> TAC Service
+        </Typography>
+        <Button color="inherit" component={Link} to="/">Home</Button>
+
+        {
+          user ? <>
+            <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
+            <Button color="inherit" component={Link} to="/my-vehicles">My Vehicle List</Button>
+            <Button color="inherit" component={Link} to="/my-bookings">My Bookings</Button>
+            <Button color="inherit" component={Link} to="/service-history">My Service History</Button>
+          </> : null
+          
+        }
+
+        {!user ? (
+          <>
+            <Button color="inherit" component={Link} to="/login">Login</Button>
+            <Button color="inherit" component={Link} to="/create-account">Register</Button>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={handleMenuOpen} color="inherit">
+              <Avatar>{user.firstName.charAt(0)}</Avatar>
+            </IconButton>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+              <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>
+              <MenuItem onClick={() => { logOut(); handleMenuClose(); }}>
+                <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: 8 }} /> Log Out
+              </MenuItem>
+            </Menu>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

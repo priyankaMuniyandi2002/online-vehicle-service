@@ -9,15 +9,28 @@ const helmet = require("helmet");
 const bp = require("body-parser");
 const routes = require("./routes/routes");
 const userLoginRoutes = require("./routes/user");
+const vehicleRoutes=require("./routes/vehicle.route")
+const path = require('path');
 
 /* Setting up the App middleware. Note: helmet framework used to secure this expressJS back-end application. */
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // allow only requests from this domain
+};
+
+app.use(cors(corsOptions))
+// Middleware for images only
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Allow requests from React frontend
+  next();
+});
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(morgan("dev"));
 app.use(helmet());
 app.use("/api/bookings", routes);
 app.use("/api", userLoginRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 
 /* dotenv package used to load environment variables from a .env file. */
 const dotenv = require("dotenv").config();

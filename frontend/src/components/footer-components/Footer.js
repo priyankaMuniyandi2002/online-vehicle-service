@@ -1,19 +1,20 @@
-/** TAC SERVICE BOOKING APP REACT FOOTER COMPONENT FILE **/
-/*
- * This component represents the footer section, displaying branding information for the TAC Service Booking App.
- */
-
-/* Importing the necessary dependencies */
+import { AppBar, Toolbar, Typography, Container, Box } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
   return (
-    <footer className="footer nav-footer">
-      <span className="copyright-icon">
-        <FontAwesomeIcon icon={faCopyright} />
-      </span>
-      Tyler's Auto Clinic | All Rights Reserved
-    </footer>
+    <AppBar position="static" color="primary" sx={{ marginTop: "auto", padding: 2 }}>
+      <Container maxWidth="md">
+        <Toolbar sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <Typography variant="h6" gutterBottom>
+            Vehicle Service Booking
+          </Typography>
+          <Typography variant="body2" color="inherit">
+            <FontAwesomeIcon icon={faCopyright} /> {new Date().getFullYear()} TAC Service. All rights reserved.
+          </Typography>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
