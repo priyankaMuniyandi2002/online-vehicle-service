@@ -14,8 +14,7 @@ const { sendBookingEmail } = require("../utils/email");
 /* Retrieving all service bookings from the database */
 const getBookings = async (req, res) => {
   const userId = req.user._id;
-  const bookingsList = await Booking.find({ userId });
-tus 
+  const bookingsList = await Booking.find({ userId }); 
   try {
     res.json({
       message: "All service bookings from the bookingsDB Database",

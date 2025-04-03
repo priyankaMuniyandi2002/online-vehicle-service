@@ -41,7 +41,7 @@ const UpdateBookingForm = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: async () => {
-      const response = await fetch(`/api/bookings/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/bookings/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();

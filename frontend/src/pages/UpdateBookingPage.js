@@ -8,10 +8,10 @@ import HelpModal from "../components/modal-components/HelpModal";
 const UpdateBookingPage = () => {
   return (
     <div className="app-page">
-      <Navbar />
+      {/* <Navbar /> */}
       <UpdateBookingForm />
       <HelpModal />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
