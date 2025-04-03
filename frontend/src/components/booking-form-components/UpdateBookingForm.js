@@ -30,6 +30,8 @@ const UpdateBookingForm = () => {
   /* Getting and destructuring/extracting user information from authentication context */
   const { user } = useAuthContext();
 
+  console.log(user)
+
   /* Initializing Redux toolkit dispatch hook */
   const dispatch = useDispatch();
 
@@ -41,7 +43,7 @@ const UpdateBookingForm = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: async () => {
-      const response = await fetch(`http://localhost:8080/api/bookings/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/bookings/admin/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();

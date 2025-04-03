@@ -12,7 +12,8 @@ const {
   createBooking,
   updateBooking,
   deleteBooking,
-  getBookingsall
+  getBookingsall,
+  getSingleBookingadmin
 } = require("../controllers/bookingController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -28,6 +29,7 @@ router.get("/all", getBookingsall);
 
 /* GET request for a service booking based on ID */
 router.get("/:id", getSingleBooking);
+router.get("/admin/:id", getSingleBookingadmin);
 
 /* POST request to add/schedule a new service booking */
 router.post("/schedule-booking", createBooking);

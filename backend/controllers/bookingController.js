@@ -67,6 +67,28 @@ const getSingleBooking = async (req, res) => {
   }
 };
 
+const getSingleBookingadmin = async (req, res) => {
+  const bookingID = req.params.id;
+
+  const singleBooking = await Booking.findOne({
+    _id: bookingID,
+  });
+
+  try {
+    if (!singleBooking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    singleBooking;
+    res.json({
+      message: "Service Booking Found.",
+      booking: singleBooking,
+    });
+  } catch (error) {
+    res.send(`Error message: ${error.message}`);
+  }
+};
+
 /* Adding a new service booking document to the database */
 const createBooking = async (req, res) => {
   if (req.body.addInfo === "") {
@@ -153,5 +175,6 @@ module.exports = {
   createBooking,
   updateBooking,
   deleteBooking,
-  getBookingsall
+  getBookingsall,
+  getSingleBookingadmin
 };
