@@ -6,6 +6,8 @@ dotenv.config();
 
 /* Importing the user database Schema Model into the user controller file */
 const User = require("../models/userModel");
+const vehicle = require("../models/vehicle");
+const bookingModel = require("../models/bookingModel");
 
 const createToken = (_id) => {
   console.log("createToken function called",process.env.SECRET);
@@ -51,4 +53,34 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { userCreateAcc, userLogin };
+
+const admindetail=async (req,res)=>{
+
+  const users= await User.find()
+  const vehicles=await vehicle.find()
+  const totalbooking=await bookingModel.find()
+  const completedservices=(await bookingModel.find()).filter(booking=>booking.status==="COMPLETED")
+  const pendingservices=(await bookingModel.find()).filter(booking=>booking.status==="IN-PROGRESS")
+  
+  const dashboarddetails={
+    userscount:users.length,
+    vehiclescount:vehicles.length,
+    allbookingcount:totalbooking.length,
+    completedservicescount:completedservices.length,
+    pendingservicescount:pendingservices.length
+  }
+
+  res.status(200).json(dashboarddetails);
+
+}
+
+const getallusers=async(req,res)=>{
+
+  const users= await User.find()
+
+  res.status(200).json(users);
+
+
+}
+
+module.exports = { userCreateAcc, userLogin,admindetail,getallusers };

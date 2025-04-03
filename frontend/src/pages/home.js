@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Button, Grid, Card, CardContent, CardMedia, Fade, Zoom, Stepper, Step, StepLabel, Slide } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Vehiclepages from '../components/vehicle/vehiclepage';
+import HomeVehiclepages from '../components/vehicle/homevehicle';
 
 const features = [
   { title: 'Service Booking', description: 'Easily book services for your vehicle with just a few clicks.', image: 'service-booking.jpg' },
@@ -58,7 +59,7 @@ const HomePage = () => {
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }}>
          Our serviced Vehicles
         </Typography>
-        <Vehiclepages/>
+        <HomeVehiclepages/>
        
       </Box>
 

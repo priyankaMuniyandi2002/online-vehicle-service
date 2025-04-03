@@ -4,15 +4,15 @@ import { Card, CardContent, CardMedia, Typography, Button } from "@mui/material"
 import { motion } from "framer-motion";
 import axios from "axios";
 
-const Vehiclepages = () => {
+const HomeVehiclepages = () => {
   const [vehicles, setVehicles] = useState([]);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+//   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     // Fetch vehicle data from the backend
     axios
-      .get("http://localhost:8080/api/vehicles/view/" + user.email)
+      .get("http://localhost:8080/api/vehicles/view/")
       .then((response) => setVehicles(response.data))
       .catch((error) => console.error("Error fetching vehicles:", error));
   }, []);
@@ -41,7 +41,7 @@ const Vehiclepages = () => {
               <Typography className="text-gray-600 text-center text-sm mt-2">
                 Registration: {vehicle.registrationNumber}
               </Typography>
-              <div className="flex justify-center mt-4" style={{display:"flex",gap:"20px"}}>
+              {/* <div className="flex justify-center mt-4" style={{display:"flex",gap:"20px"}}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -60,9 +60,9 @@ const Vehiclepages = () => {
                   Book Emergency 🚨 Service
                 </Button>
 
-                {/* emergencybooking/ */}
+                emergencybooking/
 
-              </div>
+              </div> */}
 
                
 
@@ -74,4 +74,4 @@ const Vehiclepages = () => {
   );
 };
 
-export default Vehiclepages;
+export default HomeVehiclepages;

@@ -7,12 +7,14 @@
 const router = require("express").Router();
 
 /* Importing the user controller functions into the user routes file */
-const { userLogin, userCreateAcc } = require("../controllers/userController");
+const { userLogin, userCreateAcc ,admindetail, getallusers} = require("../controllers/userController");
 
 /* POST request sign-up route to handle a user account creation request */
 router.post("/create-acc", userCreateAcc);
 
 /* POST request login route to handle a user login request */
 router.post("/login", userLogin);
+router.get("/admin/dashboard", admindetail);
+router.get("/getallusers", getallusers);
 
 module.exports = router;

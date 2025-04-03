@@ -5,6 +5,7 @@ const statusFlags = [
   "IN-PROGRESS",
   "ON-HOLD",
   "WAITING FOR PARTS",
+  "COMPLETED"
 ];
 
 export default statusFlags;

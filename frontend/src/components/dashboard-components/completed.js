@@ -14,7 +14,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 
-const ServiceProviderDashboard = () => {
+const Completedservices = () => {
   const { user } = useAuthContext();
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
@@ -35,11 +35,12 @@ const ServiceProviderDashboard = () => {
     }
   }, [user, dispatch]);
 
-  const filteredBookings = bookings.filter((booking) =>
+  const filteredBookings = bookings.filter(booking=>booking.status=="COMPLETED").filter((booking) =>
     Object.values(booking).some((value) =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      ));
+
+  
 
   const exportToPDF = () => {
     const doc = new jsPDF();
@@ -86,7 +87,7 @@ const ServiceProviderDashboard = () => {
   return (
     <section className="dashboard-display-section">
       <div className="title-container">
-        <h2 className="title">All Booking</h2>
+        <h2 className="title"> Completed Booking </h2>
       </div>
       <div className="nav-link-container">
         <TextField
@@ -159,4 +160,7 @@ const ServiceProviderDashboard = () => {
   );
 };
 
-export default ServiceProviderDashboard;
+export default Completedservices;
+
+
+

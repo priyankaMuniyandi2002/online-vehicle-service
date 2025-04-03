@@ -16,6 +16,7 @@ import Footer from "./components/footer-components/Footer";
 import Dashboardforuser from "./components/dashboard-components/new/dashboard";
 import Vehiclepages from "./components/vehicle/vehiclepage";
 import HomePage from "./pages/home";
+import EmergencyBookingForm from "./components/booking-form-components/emergencybooking";
 
 export default function App() {
   const { user } = useAuthContext();
@@ -30,7 +31,6 @@ export default function App() {
           {/* HomePage */}
           <Route path="/" element={<HomePage />} />
           <Route path="/create-account" element={<CreateAccPage />} />
-          <Route path="/technician/create-account" element={<TechnicianCreateAcc />} />
           <Route path="/serviceprovider/create-account" element={<ServiceproCreateAcc />} />
           <Route path="/login" element={<LandingPage />} />
 
@@ -42,6 +42,8 @@ export default function App() {
               <Route path="/my-vehicles-list" element={<Vehiclepages />} />
               {/* Vehiclepages //my-vehicles-list */}
               <Route path="/my-vehicles" element={<VehicleTable />} />
+              {/* EmergencyBookingForm */}
+              <Route path="/emergencybooking/:id" element={<EmergencyBookingForm />} />
               <Route path="/schedule-booking/:id" element={<ScheduleBookingPage />} />
               <Route path="/update-booking/:id" element={<UpdateBookingPage />} />
               <Route path="/notification" element={<Notification />} />
@@ -49,8 +51,7 @@ export default function App() {
               {/* Dashboardforuser */}
             </>
           )}
-
-          {/* Admin Routes */}
+{/* EmergencyBookings          Admin Routes */}
           {user && <Route path="/admin/dashboard" element={<AdminDashboardPage />} />}
         </Routes>
         <Footer  />

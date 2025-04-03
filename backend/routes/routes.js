@@ -12,6 +12,7 @@ const {
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingsall
 } = require("../controllers/bookingController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -21,6 +22,9 @@ router.use(requireAuth);
 
 /* GET request for all service bookings */
 router.get("/", getBookings);
+
+router.get("/all", getBookingsall);
+// getBookingsall
 
 /* GET request for a service booking based on ID */
 router.get("/:id", getSingleBooking);

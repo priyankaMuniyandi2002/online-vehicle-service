@@ -10,6 +10,7 @@ const bp = require("body-parser");
 const routes = require("./routes/routes");
 const userLoginRoutes = require("./routes/user");
 const vehicleRoutes=require("./routes/vehicle.route")
+const emergencyBookingRoutes=require("./routes/emergency.route")
 const path = require('path');
 
 /* Setting up the App middleware. Note: helmet framework used to secure this expressJS back-end application. */
@@ -31,6 +32,8 @@ app.use(helmet());
 app.use("/api/bookings", routes);
 app.use("/api", userLoginRoutes);
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/emergency-bookings', emergencyBookingRoutes);
+
 
 /* dotenv package used to load environment variables from a .env file. */
 const dotenv = require("dotenv").config();

@@ -8,10 +8,8 @@ import HelpModal from "../components/modal-components/HelpModal";
 const ScheduleBookingPage = () => {
   return (
     <div className="app-page">
-   
       <ScheduleBookingForm />
       <HelpModal />
-    
     </div>
   );
 };

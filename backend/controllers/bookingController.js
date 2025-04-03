@@ -7,11 +7,28 @@ file.
 
 /* Importing the Database Schema Model into the controller file */
 const Booking = require("../models/bookingModel");
+const userModel = require("../models/userModel");
+const { sendBookingEmail } = require("../utils/email");
+
 
 /* Retrieving all service bookings from the database */
 const getBookings = async (req, res) => {
   const userId = req.user._id;
   const bookingsList = await Booking.find({ userId });
+tus 
+  try {
+    res.json({
+      message: "All service bookings from the bookingsDB Database",
+      bookings: bookingsList,
+    });
+  } catch (error) {
+    res.send(`Error message: ${error.message}`);
+  }
+};
+
+const getBookingsall = async (req, res) => {
+  
+  const bookingsList = await Booking.find();
 
   try {
     res.json({
@@ -22,6 +39,10 @@ const getBookings = async (req, res) => {
     res.send(`Error message: ${error.message}`);
   }
 };
+
+
+
+
 
 /* Get a single service booking matching a certain ID */
 const getSingleBooking = async (req, res) => {
@@ -54,13 +75,30 @@ const createBooking = async (req, res) => {
   }
 
 
-
+  // data.status="IN-PROGRESS"
   const userId = req.user._id;
-  const newBooking = await Booking.create({ ...req.body, userId });
+  const data={ ...req.body, userId }
+  const newBooking = await Booking.create(data);
   const bookingsList = await Booking.find({ userId });
 
   try {
     newBooking;
+
+    const users=await userModel.find()
+
+    users.map(async(user)=>{
+
+      if(user.role=="serviceprovider"){
+
+        await sendBookingEmail(newBooking,"serviceprovider",user.email)
+
+      }
+
+
+    })
+
+   await sendBookingEmail(newBooking,"customer")
+
     res.json({
       message: "New Service Booking Add",
       bookings: bookingsList,
@@ -116,4 +154,5 @@ module.exports = {
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingsall
 };

@@ -1,12 +1,13 @@
 {
-  "name": "booking-manager-backend",
+  "name": "vehicle service bookings",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "mocha",
     "start": "concurrently \"npm run server\" \"cd.. && cd ./frontend/ && npm start\"",
-    "server": "nodemon app.js"
+    "server": "nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",

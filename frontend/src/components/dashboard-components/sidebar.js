@@ -10,7 +10,6 @@ const menuItems = [
   { text: "Add Vehicles", icon: <ListAlt />, path: "/addvehicle" },
   { text: "My Bookings", icon: <Book />, path: "/my-bookings" },
   { text: "My History", icon: <History />, path: "/my-history" },
-    
 ];
 
 export default function AnimatedSidebar() {

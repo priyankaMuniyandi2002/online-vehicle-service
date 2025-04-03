@@ -28,7 +28,7 @@ const Navbar = () => {
 
         {
           user ? <>
-            <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
+            <Button color="inherit" component={Link} to={user.role==="customer"?`/dashboard`:"/admin/dashboard"}>Dashboard</Button>
             <Button color="inherit" component={Link} to="/my-vehicles">My Vehicle List</Button>
             <Button color="inherit" component={Link} to="/my-bookings">My Bookings</Button>
             <Button color="inherit" component={Link} to="/service-history">My Service History</Button>
@@ -43,16 +43,20 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <IconButton onClick={handleMenuOpen} color="inherit">
-              <Avatar>{user.firstName.charAt(0)}</Avatar>
-            </IconButton>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-              <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>
-              <MenuItem onClick={() => { logOut(); handleMenuClose(); }}>
-                <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: 8 }} /> Log Out
-              </MenuItem>
-            </Menu>
-          </>
+          {
+            user?<>
+                  <IconButton onClick={handleMenuOpen} color="inherit">
+                  <Avatar>{user?.firstName.charAt(0)}</Avatar>
+                </IconButton>
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                  <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>
+                  <MenuItem onClick={() => { logOut(); handleMenuClose(); }}>
+                    <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: 8 }} /> Log Out
+                  </MenuItem>
+                </Menu>
+            </>:null
+          }
+          </> 
         )}
       </Toolbar>
     </AppBar>

@@ -15,6 +15,9 @@ export const bookingsSlice = createSlice({
     fetchBookings: (state, action) => {
       state.bookingsList = action.payload;
     },
+    fetchall:(state,action)=>{
+      state.bookingsList.push(action.payload);
+    },
     addBooking: (state, action) => {
       state.bookingsList.push(action.payload);
     },
@@ -22,6 +25,6 @@ export const bookingsSlice = createSlice({
 });
 
 /* Destructuring/Extracting action creators from the bookings slice for dispatching actions */
-export const { fetchBookings, addBooking } = bookingsSlice.actions;
+export const { fetchBookings, addBooking,fetchall } = bookingsSlice.actions;
 
 export default bookingsSlice.reducer;
