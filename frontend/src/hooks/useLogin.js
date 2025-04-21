@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
+  const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
   const { dispatch } = useAuthContext();
 
@@ -22,12 +24,16 @@ export const useLogin = () => {
 
       const json = await response.json();
 
+      
+
       if (!response.ok) {
         console.log(json.error);
         setLoginError(json.error);
       }
 
       if (response.ok) {
+        navigate("/");
+
         if (rememberMe) {
           // If "rememberMe" is checked - save the relevant user details to local storage when the user is logged into to their account.
           localStorage.setItem("user", JSON.stringify(json));

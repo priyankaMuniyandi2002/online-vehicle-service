@@ -10,15 +10,18 @@ import Completedservices from "../components/dashboard-components/completed";
 import axios from "axios";
 import UserManagement from "../components/dashboard-components/usermanagement";
 import EmergencyBookings from "../components/dashboard-components/emergencylist";
+import AllFeedBackBookingPage from "../components/Feedback/getAllBookings";
 
 const menuItems = [
   { text: "Main Page", icon: <Home />, color: "#FF5733" ,componet:<></> },
   { text: "Vehicles List", icon: <DirectionsCar />, color: "#3357FF",componet:<><AdminVehicleTable/></>  },
   { text: "All Bookings", icon: <Event />, color: "#FF33A1" ,componet:<><ServiceprioviderDashboard/></> },
+  { text: "All  FeedBacks", icon: <Event />, color: "#FF33A1" ,componet:<><AllFeedBackBookingPage/></> },
   { text: "Pending Services", icon: <Report />, color: "#FFD700",componet:<><Pendingservices/></>  },
   { text: "Emergency Services", icon: <Warning />, color: "#A133FF",componet:<><EmergencyBookings/></>  },
   { text: "Completed Services", icon: <CheckCircle />, color: "#FF8800",componet:<><Completedservices/></>  },
   { text: "User Management", icon: <ManageAccounts />, color: "#00CCFF",componet:<><UserManagement/></>  },
+  //
 ];
 
 

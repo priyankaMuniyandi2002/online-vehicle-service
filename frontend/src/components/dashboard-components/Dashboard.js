@@ -8,6 +8,8 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { v4 as uuidv4 } from "uuid";
 import columnDisplayHeadings from "../sub-component-files/displayHeadings";
 import { toast } from "react-toastify";
+import FeedbackForm from "../Feedback/FeedbackForm"; // ✅ Import your form
+
 import {
   Container,
   Typography,
@@ -27,14 +29,24 @@ import { AddCircle, Info, Delete, Edit } from "@mui/icons-material";
 
 const UserDashboard = () => {
   const { user } = useAuthContext();
-  const { firstName, lastName } = user;
+  console.log("user", user.email);
+  
+  const { firstName, lastName, _id: userId } = user;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResultEmpty, setSearchResultEmpty] = useState(false);
   const dispatch = useDispatch();
   const bookings = useSelector((state) => state.bookings.bookingsList);
 
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+
   const showModal = () => dispatch(openHelpModal());
   const showDeleteConfirmModal = (id) => dispatch(openDcModal(id));
+
+  const handleFeedbackClick = (bookingId) => {
+    setSelectedBookingId(bookingId);
+    setShowFeedback(true);
+  };
 
   const statusClass = (status) => {
     switch (status) {
@@ -90,7 +102,7 @@ const UserDashboard = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-       Customer Booking Dashboard
+        Customer Booking Dashboard
       </Typography>
 
       <Button
@@ -173,12 +185,24 @@ const UserDashboard = () => {
                         <Delete />
                       </IconButton>
                     </Tooltip>
+                    <Tooltip title="Give Feedback">
+                      <IconButton
+                        onClick={() => handleFeedbackClick(booking._id)}
+                        color="primary"
+                      >
+                        <Edit />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+      )}
+
+      {showFeedback && selectedBookingId && (
+        <FeedbackForm bookingId={selectedBookingId} userId={user.email} />
       )}
     </Container>
   );

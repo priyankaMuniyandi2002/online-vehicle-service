@@ -25,6 +25,8 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faCar} style={{ marginRight: 8 }} /> TAC Service
         </Typography>
         <Button color="inherit" component={Link} to="/">Home</Button>
+        <Button color="inherit" component={Link} to="CarInsuranceChecker">Car Insurance Checker</Button>
+        
 
         {
           user ? <>
@@ -46,7 +48,7 @@ const Navbar = () => {
           {
             user?<>
                   <IconButton onClick={handleMenuOpen} color="inherit">
-                  <Avatar>{user?.firstName.charAt(0)}</Avatar>
+                  <Avatar>{user?.firstName}</Avatar>
                 </IconButton>
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                   <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>

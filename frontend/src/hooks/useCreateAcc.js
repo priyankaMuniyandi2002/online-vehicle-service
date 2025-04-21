@@ -1,8 +1,10 @@
 /** TAC SERVICE BOOKING APP - CUSTOM REACT HOOK FOR CREATING USER ACCOUNT **/
 
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
 
 export const useCreateAcc = () => {
+  const navigate = useNavigate();
   const { dispatch } = useAuthContext();
 
   const createAcc = async (createAccCredentials) => {
@@ -21,6 +23,7 @@ export const useCreateAcc = () => {
       console.log(json);
 
       if (response.ok) {
+        navigate("/");
         if (rememberMe) {
           // If "rememberMe" is checked - save the relevant user details to local storage when the user creates account successfully.
           localStorage.setItem("user", JSON.stringify(json));

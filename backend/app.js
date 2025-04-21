@@ -33,6 +33,8 @@ app.use("/api/bookings", routes);
 app.use("/api", userLoginRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/emergency-bookings', emergencyBookingRoutes);
+app.use('/api/feedback/', require('./routes/feedbackRoutes'));
+
 
 
 /* dotenv package used to load environment variables from a .env file. */

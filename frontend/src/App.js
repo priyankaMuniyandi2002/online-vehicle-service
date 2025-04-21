@@ -17,6 +17,7 @@ import Dashboardforuser from "./components/dashboard-components/new/dashboard";
 import Vehiclepages from "./components/vehicle/vehiclepage";
 import HomePage from "./pages/home";
 import EmergencyBookingForm from "./components/booking-form-components/emergencybooking";
+import CarInsuranceChecker from "./components/insurance/Carinsurence";
 
 export default function App() {
   const { user } = useAuthContext();
@@ -53,6 +54,9 @@ export default function App() {
           )}
 {/* EmergencyBookings          Admin Routes */}
           {user && <Route path="/admin/dashboard" element={<AdminDashboardPage />} />}
+
+          
+          <Route path="/CarInsuranceChecker" element={<CarInsuranceChecker />} />
         </Routes>
         <Footer  />
       </BrowserRouter>
