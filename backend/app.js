@@ -34,8 +34,10 @@ app.use("/api", userLoginRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/emergency-bookings', emergencyBookingRoutes);
 app.use('/api/feedback/', require('./routes/feedbackRoutes'));
+app.use('/api/history',require('./routes/historyRoutes'))
 
-
+// /api/history/history/:userId
+// /api/history/emergency-history/:useremail
 
 /* dotenv package used to load environment variables from a .env file. */
 const dotenv = require("dotenv").config();

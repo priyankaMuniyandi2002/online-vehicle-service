@@ -42,9 +42,9 @@ const userLogin = async (req, res) => {
     // generating a json web token (jwt)
     const token = createToken(user._id);
 
-    const { firstName, lastName,role } = user;
+    const { firstName, lastName,role , _id } = user;
 
-    res.status(200).json({ firstName, lastName, email, token,role });
+    res.status(200).json({ firstName, lastName, email, token,role,_id });
   } catch (error) {
     res.status(400).json({
       message: "login-error-response",

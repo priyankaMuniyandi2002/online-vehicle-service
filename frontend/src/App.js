@@ -18,6 +18,7 @@ import Vehiclepages from "./components/vehicle/vehiclepage";
 import HomePage from "./pages/home";
 import EmergencyBookingForm from "./components/booking-form-components/emergencybooking";
 import CarInsuranceChecker from "./components/insurance/Carinsurence";
+import ServiceHistory from "./components/my-serviceHistory/my-service-history";
 
 export default function App() {
   const { user } = useAuthContext();
@@ -49,6 +50,8 @@ export default function App() {
               <Route path="/update-booking/:id" element={<UpdateBookingPage />} />
               <Route path="/notification" element={<Notification />} />
               <Route path="/dashboard" element={<Dashboardforuser />} />
+              
+              <Route path="/service-history" element={<ServiceHistory />} />
               {/* Dashboardforuser */}
             </>
           )}
