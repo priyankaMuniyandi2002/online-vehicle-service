@@ -7,7 +7,6 @@ import UpdateBookingPage from "./pages/UpdateBookingPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboard";
 import Notification from "./components/Notifications/Notification";
-import TechnicianCreateAcc from "./components/auth-form-components/technicianregister";
 import ServiceproCreateAcc from "./components/auth-form-components/serviceprovidercreate";
 import AddVehicleForm from "./pages/customer/addvehicle";
 import VehicleTable from "./components/vehicle/vehicletable";
